@@ -1,0 +1,87 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout 
+  title="CONTACT | FAIRY MODELS AGENCY"
+  description="FAIRY MODELS AGENCYへのお問い合わせ・キャスティングのご相談はこちら。モデルの起用、撮影・コレクションのご依頼、モデル応募（Scout / Application）に関するお問い合わせを受け付けております。"
+>
+
+    <main class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-24 w-full flex-grow">
+        
+        <div class="text-center mb-16">
+            <h1 class="font-serif text-3xl tracking-[0.2em] text-[#C89B3C] uppercase">CONTACT</h1>
+            <p class="text-[10px] tracking-widest text-gray-500 mt-3 uppercase">お問い合わせ / 出演・取材依頼</p>
+            <div class="w-8 h-[1px] bg-[#C89B3C]/30 mx-auto mt-6"></div>
+        </div>
+
+        <form class="space-y-8 font-light text-sm bg-[#2A1A14] border border-white/5 p-8 sm:p-12 rounded shadow-2xl">
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="space-y-2">
+                    <label class="block text-xs tracking-widest text-[#DDCB82]/70 uppercase">Company Name <span class="text-gray-600">/ 会社名</span></label>
+                    <input type="text" placeholder="Shop Kloset Inc." class="w-full bg-[#1C110C] border border-white/10 rounded px-4 py-3 text-[#EAE6E1] placeholder-gray-700 focus:outline-none focus:border-[#C89B3C] transition-colors">
+                </div>
+                <div class="space-y-2">
+                    <label class="block text-xs tracking-widest text-[#DDCB82]/70 uppercase">Your Name <span class="text-[#C89B3C]">*</span> <span class="text-gray-600">/ お名前</span></label>
+                    <input type="text" required placeholder="Tarō Yamada" class="w-full bg-[#1C110C] border border-white/10 rounded px-4 py-3 text-[#EAE6E1] placeholder-gray-700 focus:outline-none focus:border-[#C89B3C] transition-colors">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="space-y-2">
+                    <label class="block text-xs tracking-widest text-[#DDCB82]/70 uppercase">Email Address <span class="text-[#C89B3C]">*</span> <span class="text-gray-600">/ メールアドレス</span></label>
+                    <input type="email" required placeholder="example@domain.com" class="w-full bg-[#1C110C] border border-white/10 rounded px-4 py-3 text-[#EAE6E1] placeholder-gray-700 focus:outline-none focus:border-[#C89B3C] transition-colors">
+                </div>
+                <div class="space-y-2">
+                    <label class="block text-xs tracking-widest text-[#DDCB82]/70 uppercase">Phone Number <span class="text-gray-600">/ 電話番号</span></label>
+                    <input type="tel" placeholder="03-0000-0000" class="w-full bg-[#1C110C] border border-white/10 rounded px-4 py-3 text-[#EAE6E1] placeholder-gray-700 focus:outline-none focus:border-[#C89B3C] transition-colors">
+                </div>
+            </div>
+
+            <div class="space-y-2">
+                <label class="block text-xs tracking-widest text-[#DDCB82]/70 uppercase">Inquiry Type <span class="text-[#C89B3C]">*</span> <span class="text-gray-600">/ お問い合わせ項目</span></label>
+                <div class="relative">
+                    <select required class="w-full bg-[#1C110C] border border-white/10 rounded px-4 py-3 text-[#EAE6E1] appearance-none focus:outline-none focus:border-[#C89B3C] transition-colors cursor-pointer">
+                        <option value="" disabled selected class="text-gray-700">選択してください / Select an option</option>
+                        <option value="casting">モデルキャスティングのご依頼 (Casting)</option>
+                        <option value="press">取材・プレス関連のお問い合わせ (Press)</option>
+                        <option value="become">モデル応募・オーディション (Become a Model)</option>
+                        <option value="other">その他のお問い合わせ (Other)</option>
+                    </select>
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-[#DDCB82]/50">
+                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="space-y-2">
+                <label class="block text-xs tracking-widest text-[#DDCB82]/70 uppercase">Message <span class="text-[#C89B3C]">*</span> <span class="text-gray-600">/ お問い合わせ内容</span></label>
+                <textarea required rows="6" placeholder="ご依頼内容、スケジュール、ご予算などをご記入ください。" class="w-full bg-[#1C110C] border border-white/10 rounded px-4 py-3 text-[#EAE6E1] placeholder-gray-700 focus:outline-none focus:border-[#C89B3C] transition-colors resize-none"></textarea>
+            </div>
+
+            <div class="flex items-start gap-3 pt-2">
+                <input type="checkbox" required id="agree" class="mt-1 accent-[#C89B3C] cursor-pointer">
+                <label for="agree" class="text-xs text-gray-400 leading-normal cursor-pointer select-none">
+                    当エージェンシーの <a href="/privacy" target="_blank" class="text-[#C89B3C] underline hover:text-[#DDCB82] transition-colors">プライバシーポリシー</a> に同意の上、送信してください。
+                </label>
+            </div>
+
+            <div class="text-center pt-4">
+                <button type="submit" class="w-full bg-[#C89B3C] text-[#1C110C] py-4 text-xs tracking-[0.2em] font-bold uppercase hover:bg-[#DDCB82] transition-colors rounded shadow-lg">
+                    SEND MESSAGE
+                </button>
+            </div>
+
+        </form>
+
+        <div class="text-center mt-12">
+            <a href="/" class="text-xs tracking-widest text-gray-500 hover:text-[#C89B3C] transition-colors inline-flex items-center gap-2 font-medium">
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                BACK TO TOP
+            </a>
+        </div>
+
+    </main>
+
+</Layout>

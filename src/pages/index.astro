@@ -1,0 +1,231 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { normalizedCastsData, getProcessedNewsData } from '../data/models_data.js';
+
+// 最初の1文字だけ大文字、2文字目以降は小文字にする関数
+const formatModelName = (name) => {
+  if (!name) return '';
+  return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+};
+
+// ピックアップ対象のモデルを抽出（WOMAN / MAN）
+const womanModels = normalizedCastsData.filter((m) => m.category === 'woman' && m.isPickup);
+const manModels = normalizedCastsData.filter((m) => m.category === 'man' && m.isPickup);
+
+// ニュースデータを整形し、最新5件を取得（リンクもAstro用に整形）
+const formatLink = (link) => link.replace(/^\.\//, '/').replace(/\.html$/, '');
+const latestNews = getProcessedNewsData().slice(0, 5).map((item) => ({
+  ...item,
+  link: item.link ? formatLink(item.link) : '',
+  members: item.members ? item.members.map((m) => ({ ...m, link: formatLink(m.link) })) : []
+}));
+---
+
+<Layout 
+  title="Fairy Models Agency | International High-Fashion Models"
+  description="国内外のハイファッション広告・メディアに特化したモデルエージェンシー。Fairy Models Agency represents top-tier international models with profound expression and distinct identity."
+>
+
+    <!-- SECTION 0: HERO -->
+    <section class="relative h-screen w-full overflow-hidden flex items-center justify-center bg-[#1C110C]">
+        <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover z-0 opacity-60">
+            <source src="/assets/fma_hero.mp4" type="video/mp4">
+        </video>
+        <div class="absolute inset-0 bg-gradient-to-b from-black/50 via-[#1C110C]/40 to-[#1C110C] z-10"></div>
+        
+        <div class="relative z-20 text-center px-4 w-full max-w-6xl mx-auto">
+            <h1 class="font-serif text-2xl sm:text-4xl md:text-5xl lg:text-6xl text-[#d7be53] tracking-[0.2em] whitespace-nowrap drop-shadow-lg">
+                <span class="font-semibold">Fairy Models</span> <span class="font-light">Agency</span>
+            </h1>
+        </div>
+    </section>
+
+    <!-- SECTION 1: MODELS -->
+    <section id="models" class="py-20 max-w-[1400px] mx-auto px-4 border-t border-white/5">
+        <div class="text-center mb-16">
+            <h2 class="font-serif text-2xl tracking-[0.3em] text-[#d7be53] uppercase">MODELS</h2>
+            <p class="text-[10px] tracking-widest text-gray-500 mt-2 uppercase">Selected Casts</p>
+        </div>
+
+        <!-- 1段目: WOMAN -->
+        <div id="models-woman" class="scroll-mt-28 mb-12">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 lg:gap-8">
+                {womanModels.map((model) => (
+                    <div class="fade-in-up transition-all duration-300 group cursor-pointer text-center">
+                        <a href={model.link} class="block">
+                            <div class="flash-hover aspect-[2/3] w-full bg-[#2A1A14] overflow-hidden relative mb-4 rounded-sm">
+                                <img src={model.img} alt={formatModelName(model.name)} class="w-full h-full object-cover opacity-90 transition-all duration-1000 group-hover:scale-105 group-hover:opacity-100" />
+                            </div>
+                            <div class="pb-2">
+                                <h4 class="font-serif text-base md:text-lg tracking-[0.22em] text-[#EAE6E1] font-medium transition-colors group-hover:text-[#d7be53]">{formatModelName(model.name)}</h4>
+                                <p class="text-[9px] text-gray-500 tracking-[0.15em] mt-1.5 font-light">{model.size}</p>
+                            </div>
+                        </a>
+                    </div>
+                ))}
+            </div>
+        </div>
+
+        <!-- 2段目: MAN -->
+        <div id="models-man" class="scroll-mt-28">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 lg:gap-8">
+                {manModels.map((model) => (
+                    <div class="fade-in-up transition-all duration-300 group cursor-pointer text-center">
+                        <a href={model.link} class="block">
+                            <div class="flash-hover aspect-[2/3] w-full bg-[#2A1A14] overflow-hidden relative mb-4 rounded-sm">
+                                <img src={model.img} alt={formatModelName(model.name)} class="w-full h-full object-cover opacity-90 transition-all duration-1000 group-hover:scale-105 group-hover:opacity-100" />
+                            </div>
+                            <div class="pb-2">
+                                <h4 class="font-serif text-base md:text-lg tracking-[0.22em] text-[#EAE6E1] font-medium transition-colors group-hover:text-[#d7be53]">{formatModelName(model.name)}</h4>
+                                <p class="text-[9px] text-gray-500 tracking-[0.15em] mt-1.5 font-light">{model.size}</p>
+                            </div>
+                        </a>
+                    </div>
+                ))}
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 2: NEWS -->
+    <section id="news" class="py-20 md:py-28 border-t border-b border-white/5 bg-[#1C110C]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-8">
+                <div class="space-y-2">
+                    <h2 class="font-serif text-3xl md:text-4xl tracking-[0.2em] text-[#d7be53] uppercase">NEWS</h2>
+                    <p class="text-[10px] tracking-widest text-gray-500 uppercase">最新情報 / お知らせ</p>
+                    <div class="w-28 h-[1px] bg-[#d7be53]/30 mt-4"></div>
+                </div>
+
+                <div class="lg:col-span-2">
+                    <div id="top-news-list" class="divide-y divide-white/5 font-light">
+                        {latestNews.map((item) => (
+                            item.isGroup && item.members.length > 1 ? (
+                                <div class="news-item py-5 sm:py-6 transition-colors hover:bg-white/[0.02] px-4 -mx-4 rounded">
+                                    <button type="button" class="news-accordion-btn w-full text-left flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-6 group focus:outline-none">
+                                        <time datetime={item.date} class="font-serif text-xs text-[#DDCB82]/60 tracking-widest w-24 flex-shrink-0">{item.displayDate}</time>
+                                        <div class="flex items-center gap-2 flex-shrink-0">
+                                            {item.isNew && (
+                                                <span class="text-[9px] tracking-widest text-[#d7be53] border border-[#d7be53]/60 bg-[#d7be53]/10 px-2 py-0.5 rounded font-medium uppercase">NEW</span>
+                                            )}
+                                            <span class="text-[9px] tracking-widest bg-white/5 text-gray-300 px-2.5 py-0.5 rounded border border-white/5 uppercase text-center min-w-[50px]">{item.category}</span>
+                                        </div>
+                                        <h3 class="text-sm text-gray-300 group-hover:text-[#d7be53] transition-colors tracking-wide flex-1 leading-relaxed">
+                                            {`【新規登録】新たに${item.members.length}名のモデル（${item.members.map((m) => m.name).join(' / ')}）が参加しました！`}
+                                        </h3>
+                                        <span class="accordion-icon hidden sm:inline-block text-gray-500 group-hover:text-[#d7be53] transition-transform duration-300 text-xs">＋</span>
+                                    </button>
+                                    <div class="news-accordion-panel hidden mt-4 sm:pl-[7.5rem]">
+                                        <p class="text-[10px] tracking-widest text-gray-400 mb-2.5 uppercase">各モデルのプロフィール詳細：</p>
+                                        <div class="flex flex-wrap gap-2">
+                                            {item.members.map((m) => (
+                                                <a href={m.link} class="inline-flex items-center gap-1.5 text-xs text-gray-300 hover:text-[#d7be53] bg-white/[0.03] hover:bg-[#d7be53]/10 border border-white/10 hover:border-[#d7be53]/40 px-3 py-1.5 rounded transition-colors">
+                                                    <span>{m.name}</span>
+                                                    <span class="text-[10px] text-[#d7be53]/70">→</span>
+                                                </a>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                            ) : (
+                                <a href={item.isGroup ? item.members[0].link : item.link} class="news-item block py-5 sm:py-6 flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-6 group transition-colors hover:bg-white/[0.02] px-4 -mx-4 rounded">
+                                    <time datetime={item.date} class="font-serif text-xs text-[#DDCB82]/60 tracking-widest w-24 flex-shrink-0">{item.displayDate}</time>
+                                    <div class="flex items-center gap-2 flex-shrink-0">
+                                        {item.isNew && (
+                                            <span class="text-[9px] tracking-widest text-[#d7be53] border border-[#d7be53]/60 bg-[#d7be53]/10 px-2 py-0.5 rounded font-medium uppercase">NEW</span>
+                                        )}
+                                        <span class="text-[9px] tracking-widest bg-white/5 text-gray-300 px-2.5 py-0.5 rounded border border-white/5 uppercase text-center min-w-[50px]">{item.category}</span>
+                                    </div>
+                                    <h3 class="text-sm text-gray-300 group-hover:text-[#d7be53] transition-colors tracking-wide flex-1 leading-relaxed">
+                                        {item.isGroup ? `【新規登録】「${item.members[0].name}」が新たに参加しました!` : item.title}
+                                    </h3>
+                                    <span class="hidden sm:block text-gray-600 group-hover:text-[#d7be53] transition-colors text-xs">→</span>
+                                </a>
+                            )
+                        ))}
+                    </div>
+
+                    <div class="pt-8 text-right">
+                        <a href="/news" class="inline-block border border-[#d7be53]/40 text-[#d7be53] hover:bg-[#d7be53] hover:text-[#1C110C] px-6 py-3 tracking-[0.2em] text-[10px] font-medium transition-all duration-300 rounded uppercase">
+                            View All Archive →
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 3: CONTACT -->
+    <section id="contact" class="py-24 bg-[#2A1A14] border-t border-white/5 text-[#DDCB82]">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
+                <div>
+                    <h2 class="font-serif text-3xl text-[#d7be53] mb-8 tracking-[0.15em]">CONTACT</h2>
+                    <div class="space-y-4 font-light text-sm tracking-wide text-[#DDCB82]/90">
+                        <p class="text-base text-[#d7be53] font-serif">
+                            <span class="font-semibold">Fairy Models</span> <span class="font-light">Agency</span>
+                        </p>
+                        <p class="text-gray-400">Operating by ShopKloset inc.</p>
+                        <p class="text-gray-400">MAIL: info@fairymodelsagency.com</p>
+                    </div>
+                </div>
+                
+                <div class="flex flex-col justify-center space-y-6">
+                    <p class="text-xs text-gray-400 font-light tracking-widest leading-relaxed">
+                        出演・キャスティングのご依頼、各種お問い合わせ、モデル応募は下記専用フォームより承っております。
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <a href="/contact" class="group block bg-[#d7be53] text-[#1C110C] py-4 text-center rounded transition-all duration-300 hover:bg-[#DDCB82] shadow-lg">
+                            <span class="block text-[10px] tracking-[0.15em] font-medium opacity-60 mb-0.5">お問い合わせ</span>
+                            <span class="block text-xs tracking-[0.2em] font-bold uppercase">Contact Form</span>
+                        </a>
+                        <a href="/fma_model_entry" class="group block border border-[#d7be53] text-[#d7be53] hover:bg-[#d7be53] hover:text-[#1C110C] py-4 text-center rounded transition-all duration-300 shadow-lg">
+                            <span class="block text-[10px] tracking-[0.15em] font-medium opacity-80 mb-0.5">モデル応募</span>
+                            <span class="block text-xs tracking-[0.2em] font-bold uppercase">Entry Form</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- アクセスマップ -->
+            <div class="pt-8 border-t border-white/10">
+                <h3 class="font-serif text-lg text-[#d7be53] mb-4 tracking-[0.15em] uppercase">LOCATION ACCESS</h3>
+                <div class="w-full h-72 sm:h-80 rounded overflow-hidden shadow-2xl border border-white/10">
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3241.7479754723737!2d139.70133657677112!3d35.65858047259469!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188b563b00109f%3A0x693a00215707027!2z44CS150LMDExMiDmnbHkuq3pg73muIli4Yy66L6C5aC0MS0yMwtC0pQ!5e0!3m2!1sja!2sjp!4v1700000000000!5m2!1sja!2sjp" 
+                        width="100%" 
+                        height="100%" 
+                        style="border:0; filter: grayscale(80%) invert(90%) contrast(120%);" 
+                        allowfullscreen="" 
+                        loading="lazy" 
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script is:inline>
+        // カードのフェードインアニメーション
+        document.addEventListener("DOMContentLoaded", () => {
+            setTimeout(() => {
+                document.querySelectorAll('.fade-in-up').forEach((card, index) => {
+                    setTimeout(() => {
+                        card.classList.add('is-visible');
+                    }, index * 80);
+                });
+            }, 50);
+
+            // ニュースのアコーディオン開閉
+            document.querySelectorAll('.news-accordion-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const panel = btn.nextElementSibling;
+                    const icon = btn.querySelector('.accordion-icon');
+                    const isOpen = !panel.classList.contains('hidden');
+                    panel.classList.toggle('hidden');
+                    if (icon) icon.textContent = isOpen ? '＋' : '－';
+                });
+            });
+        });
+    </script>
+
+</Layout>

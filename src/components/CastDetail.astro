@@ -1,0 +1,160 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+interface Props {
+  cast: {
+    name: string;
+    kana?: string;
+    gender: string;
+    category: string;
+    size: string;
+    shoes?: string;
+    img: string;
+    gallery?: string[];
+    pdf?: string;
+    works?: {
+      magazine?: string;
+      show?: string;
+    };
+  };
+}
+
+const { cast } = Astro.props;
+
+const parts = cast.size.split('/').map((s) => s.trim());
+const height = parts[0] || '-';
+const chestOrBust = parts[1] || '-';
+const waist = parts[2] || '-';
+const hips = parts[3] || '-';
+const shoes = cast.shoes || parts[4] || '';
+
+const chestLabel = cast.gender === 'man' ? 'CHEST' : 'BUST';
+const roleLabel = cast.category === 'artist' ? 'Fairy Models Artist' : 'Fairy Models Agency';
+const galleryImages = cast.gallery || [];
+---
+
+<Layout 
+  title={`${cast.name} | Fairy Models Agency`}
+  description={`${cast.name}のポートフォリオ・コンポジット情報。Fairy Models Agency所属モデル。`}
+>
+    <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 w-full flex-grow">
+        
+        <!-- UPPER: メインポートレート ＆ スタッツセクション -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-16 items-start mb-20">
+            
+            <!-- 左側：メインポートレート -->
+            <div class="w-full bg-brand-medium overflow-hidden aspect-[3/4] border border-white/5 rounded-sm">
+                <img src={cast.img} alt={`${cast.name} Main`} class="w-full h-full object-cover">
+            </div>
+            
+            <!-- 右側：モデル名 ＆ スタッツ ＆ 実績 -->
+            <div class="space-y-10 py-2 md:pl-2">
+                <div class="space-y-3">
+                    <p class="font-serif text-[#d7be53] text-xs tracking-[0.3em]">{roleLabel}</p>
+                    <h1 class="text-3xl md:text-5xl tracking-[0.1em] text-white font-serif font-medium">
+                        {cast.name}
+                        {cast.kana && (
+                            <span class="text-sm font-sans font-light text-gray-400 tracking-normal normal-case ml-3">( {cast.kana} )</span>
+                        )}
+                    </h1>
+                </div>
+                
+                <!-- スタッツ -->
+                <div class="space-y-2.5 font-serif text-base md:text-lg tracking-[0.15em] text-gray-200 border-b border-white/5 pb-8">
+                    <p>HEIGHT: {height} / {chestLabel}: {chestOrBust}</p>
+                    <p>WAIST: {waist} / HIPS: {hips}</p>
+                    {shoes && <p>SHOES: {shoes}</p>}
+                </div>
+                
+                <!-- キャリア・出演実績 -->
+                <div class="space-y-6 pt-2">
+                    <h3 class="font-sans text-xs text-[#d7be53] tracking-[0.2em] font-medium uppercase">CAREER / WORKS</h3>
+                    
+                    <div class="space-y-5 text-sm tracking-wide">
+                        <div>
+                            <span class="text-white font-medium block mb-1.5 text-xs tracking-[0.15em]">◆ MAGAZINE</span>
+                            <span class="font-serif text-gray-400 text-sm tracking-widest block pl-4">{cast.works?.magazine || '-'}</span>
+                        </div>
+                        <div>
+                            <span class="text-white font-medium block mb-1.5 text-xs tracking-[0.15em]">◆ SHOW</span>
+                            <span class="font-serif text-gray-400 text-sm tracking-widest block pl-4">{cast.works?.show || '-'}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- LOWER: アザーカット（PORTFOLIO GALLERY）※将来用コード保持 -->
+        {galleryImages.length > 0 && (
+            <div class="border-t border-white/5 pt-16 mb-16">
+                <h2 class="font-serif text-xs tracking-[0.3em] text-[#d7be53] uppercase mb-10 text-center">PORTFOLIO GALLERY</h2>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 lg:gap-12 items-start max-w-3xl mx-auto">
+                    {galleryImages.map((imgSrc, idx) => (
+                        <div class="aspect-[3/4] overflow-hidden bg-brand-medium border border-white/5 rounded-sm">
+                            <img src={imgSrc} alt={`${cast.name} Gallery ${idx + 1}`} class="w-full h-full object-cover">
+                        </div>
+                    ))}
+                </div>
+            </div>
+        )}
+
+        <!-- LOWER: ポートフォリオ PDF セクション -->
+        {cast.pdf && (
+            <div class="border-t border-white/5 pt-16">
+                <h2 class="font-serif text-xs tracking-[0.3em] text-[#d7be53] uppercase mb-10 text-center">MODEL PORTFOLIO (PDF)</h2>
+                
+                <div class="max-w-4xl mx-auto space-y-6">
+                    <div class="w-full bg-[#2A1A14] border border-white/10 rounded overflow-hidden aspect-[4/3] md:aspect-[16/9] shadow-2xl">
+                        <iframe src={cast.pdf} class="w-full h-full border-0" title={`${cast.name} Portfolio PDF`}>
+                            <p class="text-center py-10 text-xs text-gray-400">お使いのブラウザはPDF表示に対応していません。</p>
+                        </iframe>
+                    </div>
+
+                    <div class="text-center pt-2">
+                        <a href={cast.pdf} target="_blank" rel="noopener noreferrer" 
+                           class="inline-flex items-center gap-3 bg-transparent border border-[#d7be53] text-[#d7be53] hover:bg-[#d7be53] hover:text-[#1C110C] px-8 py-3.5 rounded text-xs tracking-[0.2em] font-medium uppercase transition-all duration-300 shadow-lg">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                            DOWNLOAD PORTFOLIO (PDF)
+                        </a>
+                    </div>
+                </div>
+            </div>
+        )}
+
+    </main>
+
+    <!-- SECTION: CONTACT -->
+    <section id="contact" class="py-24 bg-[#2A1A14] border-t border-white/5 text-[#DDCB82]">
+        <div class="max-w-5xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-16">
+            <div>
+                <h2 class="font-serif text-3xl text-[#d7be53] mb-8 tracking-[0.15em]">CONTACT</h2>
+                <div class="space-y-4 font-light text-sm tracking-wide text-[#DDCB82]/90">
+                    <p class="text-base text-[#d7be53] font-serif">
+                        <span class="font-semibold">Fairy Models</span> <span class="font-light">Agency</span>
+                    </p>
+                    <p class="text-gray-400">Operating by ShopKloset inc.</p>
+                    <p class="text-gray-400">MAIL: info@fairymodelsagency.com</p>
+                </div>
+            </div>
+            
+            <div class="flex flex-col justify-center space-y-6">
+                <p class="text-xs text-gray-400 font-light tracking-widest leading-relaxed">
+                    出演・キャスティングのご依頼、各種オーディションに関するお問い合わせ、その他ご相談は専用のオンラインフォームより承っております。
+                </p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <a href="/contact" class="group block bg-[#d7be53] text-[#1C110C] py-4 text-center rounded transition-all duration-300 hover:bg-[#DDCB82] shadow-lg">
+                        <span class="block text-[10px] tracking-[0.15em] font-medium opacity-60 mb-0.5">お問い合わせ</span>
+                        <span class="block text-xs tracking-[0.2em] font-bold uppercase">Contact Form</span>
+                    </a>
+                    <a href="/fma_model_entry" class="group block border border-[#d7be53] text-[#d7be53] hover:bg-[#d7be53] hover:text-[#1C110C] py-4 text-center rounded transition-all duration-300 shadow-lg">
+                        <span class="block text-[10px] tracking-[0.15em] font-medium opacity-80 mb-0.5">モデル応募</span>
+                        <span class="block text-xs tracking-[0.2em] font-bold uppercase">Entry Form</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+</Layout>

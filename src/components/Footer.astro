@@ -1,0 +1,37 @@
+---
+// 最新の公開サイト（index.html）と完全一致させた共通フッター
+---
+
+<footer class="bg-[#110A07] py-12 text-center border-t border-white/5 space-y-4">
+    <div class="flex flex-wrap justify-center gap-x-8 gap-y-2 text-xs tracking-[0.15em]">
+        <a href="/company" class="text-[#DDCB82]/60 hover:text-[#d7be53] transition-colors">COMPANY / LEGAL</a>
+        <a href="/privacy" class="text-[#DDCB82]/60 hover:text-[#d7be53] transition-colors">PRIVACY POLICY</a>
+        <a href="/terms" class="text-[#DDCB82]/60 hover:text-[#d7be53] transition-colors">TERMS OF USE</a>
+        <a href="/cookie" class="text-[#DDCB82]/60 hover:text-[#d7be53] transition-colors">COOKIE POLICY</a>
+    </div>
+    <p class="text-[#d7be53]/40 text-[11px] tracking-widest font-serif">
+        &copy; 2026 Shop Kloset Inc. / <span class="font-semibold">Fairy Models</span> <span class="font-light">Agency</span>. All Rights Reserved.
+    </p>
+</footer>
+
+<!-- PAGE TOP BUTTON -->
+<button id="scrollTopBtn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" 
+        class="fixed bottom-8 right-8 z-50 w-11 h-11 bg-[#110A07]/80 backdrop-blur-md border border-[#d7be53]/30 text-[#DDCB82] rounded-full flex items-center justify-center opacity-0 invisible transition-all duration-300 hover:border-[#d7be53] hover:text-[#d7be53] group shadow-lg" aria-label="Page Top">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 transform group-hover:-translate-y-0.5 transition-transform">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+    </svg>
+</button>
+
+<script is:inline>
+    window.addEventListener('scroll', () => {
+        const btn = document.getElementById('scrollTopBtn');
+        if (!btn) return;
+        if (window.scrollY > 300) {
+            btn.classList.remove('opacity-0', 'invisible');
+            btn.classList.add('opacity-100', 'visible');
+        } else {
+            btn.classList.remove('opacity-100', 'visible');
+            btn.classList.add('opacity-0', 'invisible');
+        }
+    });
+</script>

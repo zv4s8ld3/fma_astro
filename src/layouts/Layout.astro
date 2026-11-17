@@ -1,0 +1,169 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+  isTop?: boolean;
+}
+
+const {
+  title = "FAIRY MODELS AGENCY | International High-Fashion Models",
+  description = "国内外のハイファッション広告・メディアに特化したモデルエージェンシー。確かな表現力と独自のアイデンティティを備えたモデルが、貴社のブランド価値を最も美しい形で体現・発信します。",
+  isTop = false
+} = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO & OGP -->
+    <title>{title}</title>
+    <meta name="description" content={description}>
+    <meta property="og:title" content={title}>
+    <meta property="og:description" content={description}>
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:description" content={description}>
+
+    <!-- Favicon -->
+    <link rel="icon" href="/assets/fma_mark.svg" type="image/svg+xml">
+
+    <!-- Fonts & Tailwind -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['"Cormorant Garamond"', 'serif'],
+                        sans: ['"Montserrat"', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            dark: '#1C110C',      /* 極深ブラウン */
+                            medium: '#2A1A14',    /* ビターチョコレートブラウン */
+                            light: '#3D261C',     /* ココアブラウン */
+                            gold: '#d7be53',      /* 最新メインゴールド */
+                            lightgold: '#DDCB82'  /* 最新ライトゴールド */
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style is:global>
+        html { scroll-behavior: smooth; }
+        .font-serif { font-family: "Cormorant Garamond", serif !important; }
+        .font-sans { font-family: "Montserrat", sans-serif !important; }
+        
+        /* 画像保護（ドラッグ・長押しメニュー防止） */
+        img {
+            -webkit-user-drag: none;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        .flash-hover {
+            position: relative;
+            overflow: hidden;
+        }
+        .flash-hover::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #ffffff;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 30;
+        }
+        .flash-hover:hover::after {
+            animation: flashAnim 0.4s ease-out forwards;
+        }
+        @keyframes flashAnim {
+            0% { opacity: 0.4; }
+            100% { opacity: 0; }
+        }
+
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(8px);
+            transition: opacity 1.2s cubic-bezier(0.19, 1, 0.22, 1), transform 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+            will-change: opacity, transform;
+        }
+        .fade-in-up.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* アクティブタブ指定スタイル */
+        .filter-tab.active {
+            color: #1C110C !important;
+            background-color: #d7be53 !important;
+            border-color: #d7be53 !important;
+        }
+
+        /* もっと見る用の表示切替クラス */
+        .news-item.is-hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body class="bg-[#1C110C] text-[#EAE6E1] font-sans antialiased selection:bg-[#d7be53] selection:text-white overflow-x-hidden min-h-screen flex flex-col justify-between">
+
+    <!-- 共通ヘッダー -->
+    <Header isTop={isTop} />
+
+    <!-- 各ページごとのメインコンテンツ -->
+    <slot />
+
+    <!-- 共通フッター -->
+    <Footer />
+
+    <!-- PAGE TOP BUTTON -->
+    <button id="scrollTopBtn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" 
+            class="fixed bottom-8 right-8 z-50 w-11 h-11 bg-[#110A07]/80 backdrop-blur-md border border-[#d7be53]/30 text-[#DDCB82] rounded-full flex items-center justify-center opacity-0 invisible transition-all duration-300 hover:border-[#d7be53] hover:text-[#d7be53] group shadow-lg">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 transform group-hover:-translate-y-0.5 transition-transform">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+        </svg>
+    </button>
+
+    <!-- 共通スクリプト（画像保護・TOPへ戻るボタン） -->
+    <script is:inline>
+        document.addEventListener('contextmenu', (e) => {
+            if (e.target.tagName === 'IMG') {
+                e.preventDefault();
+            }
+        });
+        document.addEventListener('dragstart', (e) => {
+            if (e.target.tagName === 'IMG') {
+                e.preventDefault();
+            }
+        });
+
+        window.addEventListener('scroll', () => {
+            const btn = document.getElementById('scrollTopBtn');
+            if (!btn) return;
+            if (window.scrollY > 300) {
+                btn.classList.remove('opacity-0', 'invisible');
+                btn.classList.add('opacity-100', 'visible');
+            } else {
+                btn.classList.remove('opacity-100', 'visible');
+                btn.classList.add('opacity-0', 'invisible');
+            }
+        });
+    </script>
+
+</body>
+</html>

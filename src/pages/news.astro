@@ -1,0 +1,151 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getProcessedNewsData } from '../data/models_data.js';
+
+const formatLink = (link) => link ? link.replace(/^\.\//, '/').replace(/\.html$/, '') : '';
+
+const processedNews = getProcessedNewsData().map((item) => ({
+  ...item,
+  link: formatLink(item.link),
+  members: item.members ? item.members.map((m) => ({ ...m, link: formatLink(m.link) })) : []
+}));
+---
+
+<Layout 
+  title="NEWS | Fairy Models Agency"
+  description="Fairy Models Agencyの最新ニュース・トピックス。所属モデルのコレクション出演情報、最新広告・メディア掲載、エージェンシーの最新動向をお届けします。Latest updates, campaign news, and press releases from Fairy Models Agency."
+>
+
+    <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-24 w-full flex-grow">
+        
+        <div class="text-center mb-16">
+            <h1 class="font-serif text-3xl tracking-[0.2em] text-[#d7be53] uppercase font-light">NEWS</h1>
+            <p class="text-[10px] tracking-widest text-gray-400 mt-3 uppercase">最新情報 / お知らせ</p>
+            <div class="w-28 h-[1px] bg-[#d7be53]/30 mx-auto mt-4"></div>
+        </div>
+
+        <!-- ニュースリスト表示エリア -->
+        <div id="news-list" class="divide-y divide-white/5 font-light border-t border-b border-white/5 scroll-mt-28">
+            {processedNews.map((item) => (
+                item.isGroup && item.members.length > 1 ? (
+                    <div class="news-item py-5 sm:py-6 transition-colors hover:bg-white/[0.02] px-4 -mx-4 rounded">
+                        <button type="button" class="news-accordion-btn w-full text-left flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-6 group focus:outline-none">
+                            <time datetime={item.date} class="font-serif text-xs text-[#DDCB82]/60 tracking-widest w-24 flex-shrink-0">{item.displayDate}</time>
+                            <div class="flex items-center gap-2 flex-shrink-0">
+                                {item.isNew && (
+                                    <span class="text-[9px] tracking-widest text-[#d7be53] border border-[#d7be53]/60 bg-[#d7be53]/10 px-2 py-0.5 rounded font-medium uppercase">NEW</span>
+                                )}
+                                <span class="text-[9px] tracking-widest bg-white/5 text-gray-300 px-2.5 py-0.5 rounded border border-white/5 uppercase text-center min-w-[50px]">{item.category}</span>
+                            </div>
+                            <h3 class="text-sm text-gray-300 group-hover:text-[#d7be53] transition-colors tracking-wide flex-1 leading-relaxed">
+                                {`【新規登録】新たに${item.members.length}名のモデル（${item.members.map((m) => m.name).join(' / ')}）が参加しました！`}
+                            </h3>
+                            <span class="accordion-icon hidden sm:inline-block text-gray-500 group-hover:text-[#d7be53] transition-transform duration-300 text-xs">＋</span>
+                        </button>
+                        <div class="news-accordion-panel hidden mt-4 sm:pl-[7.5rem]">
+                            <p class="text-[10px] tracking-widest text-gray-400 mb-2.5 uppercase">各モデルのプロフィール詳細：</p>
+                            <div class="flex flex-wrap gap-2">
+                                {item.members.map((m) => (
+                                    <a href={m.link} class="inline-flex items-center gap-1.5 text-xs text-gray-300 hover:text-[#d7be53] bg-white/[0.03] hover:bg-[#d7be53]/10 border border-white/10 hover:border-[#d7be53]/40 px-3 py-1.5 rounded transition-colors">
+                                        <span>{m.name}</span>
+                                        <span class="text-[10px] text-[#d7be53]/70">→</span>
+                                    </a>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                ) : (
+                    <a href={item.isGroup ? item.members[0].link : item.link} class="news-item block py-5 sm:py-6 flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-6 group transition-colors hover:bg-white/[0.02] px-4 -mx-4 rounded">
+                        <time datetime={item.date} class="font-serif text-xs text-[#DDCB82]/60 tracking-widest w-24 flex-shrink-0">{item.displayDate}</time>
+                        <div class="flex items-center gap-2 flex-shrink-0">
+                            {item.isNew && (
+                                <span class="text-[9px] tracking-widest text-[#d7be53] border border-[#d7be53]/60 bg-[#d7be53]/10 px-2 py-0.5 rounded font-medium uppercase">NEW</span>
+                            )}
+                            <span class="text-[9px] tracking-widest bg-white/5 text-gray-300 px-2.5 py-0.5 rounded border border-white/5 uppercase text-center min-w-[50px]">{item.category}</span>
+                        </div>
+                        <h3 class="text-sm text-gray-300 group-hover:text-[#d7be53] transition-colors tracking-wide flex-1 leading-relaxed">
+                            {item.isGroup ? `【新規登録】「${item.members[0].name}」が新たに参加しました!` : item.title}
+                        </h3>
+                        <span class="hidden sm:block text-gray-600 group-hover:text-[#d7be53] transition-colors text-xs">→</span>
+                    </a>
+                )
+            ))}
+        </div>
+
+        <!-- もっと見る / 閉じる ボタンコンテナ -->
+        <div id="load-more-container" class="text-center mt-12 hidden">
+            <button id="load-more-btn" class="border border-[#d7be53]/40 text-[#d7be53] hover:bg-[#d7be53] hover:text-[#1C110C] px-8 py-3 tracking-[0.2em] text-xs font-medium transition-all duration-300 rounded uppercase">
+                MORE NEWS +
+            </button>
+        </div>
+
+        <div class="text-center mt-16">
+            <a href="/" class="text-xs tracking-widest text-gray-400 hover:text-[#d7be53] transition-colors inline-flex items-center gap-2 font-medium">
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                BACK TO TOP
+            </a>
+        </div>
+
+    </main>
+
+    <script is:inline>
+        document.addEventListener('DOMContentLoaded', () => {
+            // アコーディオン開閉制御
+            document.querySelectorAll('.news-accordion-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const panel = btn.nextElementSibling;
+                    const icon = btn.querySelector('.accordion-icon');
+                    const isOpen = !panel.classList.contains('hidden');
+                    panel.classList.toggle('hidden');
+                    if (icon) icon.textContent = isOpen ? '＋' : '－';
+                });
+            });
+
+            // ニュースもっと見る・閉じる制御（初期10件、以降5件ずつ表示）
+            const INITIAL_COUNT = 10;
+            const STEP_COUNT = 5;
+
+            const items = document.querySelectorAll('#news-list .news-item');
+            const loadMoreBtn = document.getElementById('load-more-btn');
+            const loadMoreContainer = document.getElementById('load-more-container');
+
+            if (items.length <= INITIAL_COUNT) {
+                return;
+            }
+
+            function resetNewsList() {
+                items.forEach((item, index) => {
+                    if (index >= INITIAL_COUNT) {
+                        item.classList.add('is-hidden');
+                    }
+                });
+                loadMoreBtn.textContent = 'MORE NEWS +';
+                loadMoreContainer.classList.remove('hidden');
+            }
+
+            resetNewsList();
+
+            loadMoreBtn.addEventListener('click', () => {
+                const hiddenItems = document.querySelectorAll('#news-list .news-item.is-hidden');
+                
+                if (hiddenItems.length === 0) {
+                    resetNewsList();
+                    const newsListHeader = document.getElementById('news-list');
+                    if (newsListHeader) {
+                        newsListHeader.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                    return;
+                }
+
+                for (let i = 0; i < STEP_COUNT && i < hiddenItems.length; i++) {
+                    hiddenItems[i].classList.remove('is-hidden');
+                }
+
+                if (document.querySelectorAll('#news-list .news-item.is-hidden').length === 0) {
+                    loadMoreBtn.textContent = 'CLOSE -';
+                }
+            });
+        });
+    </script>
+
+</Layout>

@@ -1,0 +1,17 @@
+---
+import CastDetail from '../../components/CastDetail.astro';
+import { normalizedCastsData } from '../../data/models_data.js';
+
+export function getStaticPaths() {
+  return normalizedCastsData
+    .filter((c) => c.link.startsWith('/direct_booking/'))
+    .map((cast) => ({
+      params: { slug: cast.link.replace(/^\/direct_booking\//, '') },
+      props: { cast },
+    }));
+}
+
+const { cast } = Astro.props;
+---
+
+<CastDetail cast={cast} />

@@ -1,0 +1,17 @@
+---
+import CastDetail from '../../components/CastDetail.astro';
+import { normalizedCastsData } from '../../data/models_data.js';
+
+export function getStaticPaths() {
+  return normalizedCastsData
+    .filter((c) => c.link.startsWith('/artists/'))
+    .map((cast) => ({
+      params: { slug: cast.link.replace(/^\/artists\//, '') },
+      props: { cast },
+    }));
+}
+
+const { cast } = Astro.props;
+---
+
+<CastDetail cast={cast} />
